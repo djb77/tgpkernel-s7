@@ -984,4 +984,11 @@ source "drivers/input/touchscreen/stm/fts7/Kconfig"
 source "drivers/input/touchscreen/stm/fts8/Kconfig"
 source "drivers/input/touchscreen/sec_ts/Kconfig"
 source "drivers/input/touchscreen/mxt_t/Kconfig"
+
+config SWEEP2SLEEP
+  tristate "Sweep to put device to sleep"
+	default y
+	help
+		Say Y here to support sweep2sleep
+
 endif
