@@ -118,6 +118,7 @@ static unsigned long lowmem_scan(struct shrinker *s, struct shrink_control *sc)
 	int other_file = global_page_state(NR_FILE_PAGES) -
 						global_page_state(NR_SHMEM) -
 						total_swapcache_pages();
+						global_page_state(NR_UNEVICTABLE);
 	struct reclaim_state *reclaim_state = current->reclaim_state;
 
 #ifdef CONFIG_CMA
