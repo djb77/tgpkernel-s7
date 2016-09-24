@@ -1053,6 +1053,7 @@ static void hub_activate(struct usb_hub *hub, enum hub_activation_type type)
 		goto init3;
 	}
 	kref_get(&hub->kref);
+
 	/* The superspeed hub except for root hub has to use Hub Depth
 	 * value as an offset into the route string to locate the bits
 	 * it uses to determine the downstream port number. So hub driver
@@ -5380,7 +5381,6 @@ static int usb_reset_and_verify_device(struct usb_device *udev)
 	}
 
 	bos = udev->bos;
-	udev->bos = NULL;
 
 	for (i = 0; i < SET_CONFIG_TRIES; ++i) {
 
@@ -5473,8 +5473,11 @@ done:
 	usb_set_usb2_hardware_lpm(udev, 1);
 	usb_unlocked_enable_lpm(udev);
 	usb_enable_ltm(udev);
-	usb_release_bos_descriptor(udev);
-	udev->bos = bos;
+	/* release the new BOS descriptor allocated  by hub_port_init() */
+	if (udev->bos != bos) {
+		usb_release_bos_descriptor(udev);
+		udev->bos = bos;
+	}
 	return 0;
 
 re_enumerate:
