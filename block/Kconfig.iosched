@@ -53,6 +53,13 @@ config CGROUP_BFQIO
 	  filesystem interface.  The name of the subsystem will be
 	  bfqio.
 
+config IOSCHED_FIFO
+	bool
+	default y
+	---help---
+	  Fifo is similar to no-op I/O scheduler and it's a minimal scheduler that does basic merging
+	  and sorting. Ported from: https://github.com/AndroidDeveloperAlliance/ZenKernel_TUNA/blob/master/block/fifo-iosched.c
+
 config IOSCHED_CFQ
 	tristate "CFQ I/O scheduler"
 	default y
@@ -107,6 +114,9 @@ choice
 		  any workload. It also tries to guarantee low latency to
 		  interactive and soft real-time applications.
 
+	config DEFAULT_FIFO
+		bool "fifo" if IOSCHED_FIFO=y
+
 endchoice
 
 config DEFAULT_IOSCHED
@@ -116,6 +126,7 @@ config DEFAULT_IOSCHED
 	default "noop" if DEFAULT_NOOP
 	default "row" if DEFAULT_ROW
 	default "bfq" if DEFAULT_BFQ
+	default "fifo" if DEFAULT_FIFO	
 endmenu
 
 endif
