@@ -119,6 +119,12 @@ config CPU_FREQ_DEFAULT_GOV_DARKNESS
 	help
 	  Use the CPUFreq governor 'Darkness' as default.
 
+config CPU_FREQ_DEFAULT_GOV_DESPAIR
+	bool "despair"
+	depends on TOUCHBOOST
+	select CPU_FREQ_GOV_DESPAIR
+	help
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -265,6 +271,11 @@ config CPU_FREQ_GOV_DANCEDANCE
 config CPU_FREQ_GOV_DARKNESS
 	tristate "'darkness' cpufreq governor"
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_DESPAIR
+	tristate "'despair' cpufreq governor"
+	depends on CPU_FREQ
+	depends on TOUCHBOOST
 
 config CPU_FREQ_GOV_INTERACTIVE
 	tristate "'interactive' cpufreq policy governor"
