@@ -190,6 +190,16 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE_PRO
 	help
 	  Use the CPUFreq governor 'interactive_pro' as default.
 
+config CPU_FREQ_DEFAULT_GOV_INTERACTIVE_X
+	bool "interactive_x"
+	depends on TOUCHBOOST
+	select CPU_FREQ_GOV_INTERACTIVE_X
+	help
+	  Use the CPUFreq governor 'interactive_x' as default. This allows
+	  you to get a full dynamic cpu frequency capable system by simply
+	  loading your cpufreq low-level hardware driver, using the
+	  'interactive' governor for latency-sensitive workloads.
+
 config CPU_FREQ_DEFAULT_GOV_ONDEMAND
 	bool "ondemand"
 	select CPU_FREQ_GOV_ONDEMAND
@@ -426,6 +436,25 @@ config CPU_FREQ_GOV_INTERACTIVE_PRO
 	tristate "'interactive_pro' cpufreq governor"
 	depends on SCHED_FREQ_INPUT
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_INTERACTIVE_X
+	tristate "'interactive_x' cpufreq policy governor"
+	depends on TOUCHBOOST
+	help
+	  'interactive_x' - This driver adds a dynamic cpufreq policy governor
+	  designed for latency-sensitive workloads.
+
+	  This governor attempts to reduce the latency of clock
+	  increases so that the system is more responsive to
+	  interactive workloads.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_interactive.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
 
 config CPU_FREQ_GOV_ONDEMAND
 	tristate "'ondemand' cpufreq policy governor"
