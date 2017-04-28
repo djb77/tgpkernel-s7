@@ -228,6 +228,8 @@ static int xhci_plat_remove(struct platform_device *dev)
 	}
 	xhci_dbg(xhci, "%s: waited %dmsec", __func__, timeout);
 
+	xhci->xhc_state |= XHCI_STATE_REMOVING;
+
 	usb_remove_hcd(xhci->shared_hcd);
 	usb_put_hcd(xhci->shared_hcd);
 
