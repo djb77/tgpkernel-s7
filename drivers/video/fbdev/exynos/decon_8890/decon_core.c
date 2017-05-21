@@ -3209,11 +3209,11 @@ static void decon_dsu_handler(struct decon_device *decon)
 	/* 1 frame delay after Display-off : change of PPS is showing at once. therefore, PPS change must be next frame of display-off */
 	v4l2_subdev_call(decon->output_sd, core, ioctl, DSIM_IOC_DISPLAY_ONOFF, (void*) 0);
 	usleep_range(17000, 17000);
-#endif	
+#endif
 #ifdef CONFIG_FB_DSU_REG_LOCK
 	decon->dsu_lock_cnt = 2;
 	v4l2_subdev_call(decon->output_sd, core, ioctl, DSIM_IOC_REG_LOCK, (void*) 1);
-#endif	
+#endif
 #endif
 
 	loop_out = false;
@@ -3421,10 +3421,10 @@ static int decon_set_win_config(struct decon_device *decon,
 	if( decon->dsu_lock_cnt > 0  ) {
 		decon->dsu_lock_cnt--;
 		if( decon->dsu_lock_cnt == 0 ) {
-#ifdef CONFIG_FB_DSU_REG_LOCK			
+#ifdef CONFIG_FB_DSU_REG_LOCK
 			v4l2_subdev_call(decon->output_sd, core, ioctl, DSIM_IOC_REG_LOCK, (void*) 0);
 #endif
-#ifdef CONFIG_FB_DSU_NOT_SEAMLESS			
+#ifdef CONFIG_FB_DSU_NOT_SEAMLESS
 			v4l2_subdev_call(decon->output_sd, core, ioctl, DSIM_IOC_DISPLAY_ONOFF, (void*) 1);
 #endif
 		}
