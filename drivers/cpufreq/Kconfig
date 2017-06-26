@@ -113,6 +113,12 @@ config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
             help
               Use the CPUFreq governor 'dancedance' as default.
 	      
+config CPU_FREQ_DEFAULT_GOV_DARKNESS
+	bool "darkness"
+	select CPU_FREQ_GOV_DARKNESS
+	help
+	  Use the CPUFreq governor 'Darkness' as default.
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -255,6 +261,10 @@ config CPU_FREQ_GOV_DANCEDANCE
            help
              dancedance' - a "smart" optimized governor!
              If in doubt, say N.
+
+config CPU_FREQ_GOV_DARKNESS
+	tristate "'darkness' cpufreq governor"
+	depends on CPU_FREQ
 
 config CPU_FREQ_GOV_INTERACTIVE
 	tristate "'interactive' cpufreq policy governor"
