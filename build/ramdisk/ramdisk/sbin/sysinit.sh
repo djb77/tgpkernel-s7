@@ -18,3 +18,6 @@ for FILE in /system/etc/init.d/*; do
    sh $FILE >/dev/null
 done;
 
+mount -o remount,ro /;
+mount -o ro,remount /system
+
