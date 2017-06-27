@@ -15,6 +15,7 @@ import /init.sec_debug.rc
 import /init.container.rc
 import /init.rilcommon.rc
 import /init.services.rc
+import /init.spectrum.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
