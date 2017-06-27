@@ -257,7 +257,7 @@ START_TIME=`date +%s`
 mv -f $RDIR/.work/ramdisk/image-new.img $RDIR/.work_zip/base/boot.img
 mv -f $RDIR/output/build.log $RDIR/output/build-g930f.log
 ZIP_DATE=`date +%Y%m%d`
-ZIP_NAME=$KERNELNAME.G930x.MM.v$VERSION_NUMBER.$ZIP_DATE.zip
+ZIP_NAME=$KERNELNAME.G930x.N.v$VERSION_NUMBER.$ZIP_DATE.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 FUNC_BUILD_ZIP
 [ -d "$RDIR/.work_zip" ] && rm -rf $RDIR/.work_zip
@@ -287,7 +287,7 @@ START_TIME=`date +%s`
 mv -f $RDIR/.work/ramdisk/image-new.img $RDIR/.work_zip/base/boot.img
 mv -f $RDIR/output/build.log $RDIR/build/build-g935f.log
 ZIP_DATE=`date +%Y%m%d`
-ZIP_NAME=$KERNELNAME.G935x.MM.v$VERSION_NUMBER.$ZIP_DATE.zip
+ZIP_NAME=$KERNELNAME.G935x.N.v$VERSION_NUMBER.$ZIP_DATE.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 FUNC_BUILD_ZIP
 [ -d "$RDIR/.work_zip" ] && rm -rf $RDIR/.work_zip
@@ -317,7 +317,7 @@ START_TIME=`date +%s`
 mv -f $RDIR/.work/ramdisk/image-new.img $RDIR/.work_zip/base/boot.img
 mv -f $RDIR/output/build.log $RDIR/output/build-g930f.log
 ZIP_DATE=`date +%Y%m%d`
-ZIP_NAME=$KERNELNAME.G930x.MM.v$VERSION_NUMBER.$ZIP_DATE.zip
+ZIP_NAME=$KERNELNAME.G930x.N.v$VERSION_NUMBER.$ZIP_DATE.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 FUNC_BUILD_ZIP
 [ -d "$RDIR/.work_zip" ] && rm -rf $RDIR/.work_zip
@@ -331,7 +331,7 @@ KERNEL_DEFCONFIG=$KERNELCONFIG-hero2lte_defconfig
 	) 2>&1	 | tee -a $RDIR/output/build.log
 mv -f $RDIR/.work/ramdisk/image-new.img $RDIR/.work_zip/base/boot.img
 mv -f $RDIR/output/build.log $RDIR/output/build-g935f.log
-ZIP_NAME=$KERNELNAME.G935x.MM.v$VERSION_NUMBER.$ZIP_DATE.zip
+ZIP_NAME=$KERNELNAME.G935x.N.v$VERSION_NUMBER.$ZIP_DATE.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 FUNC_BUILD_ZIP
 [ -d "$RDIR/.work_zip" ] && rm -rf $RDIR/.work_zip
@@ -369,7 +369,7 @@ KERNEL_DEFCONFIG=$KERNELCONFIG-hero2lte_defconfig
 mv -f $RDIR/.work/ramdisk/image-new.img $RDIR/.work_zip/base/g935x.img
 mv -f $RDIR/output/build.log $RDIR/output/build-g935f.log
 ZIP_DATE=`date +%Y%m%d`
-ZIP_NAME=$KERNELNAME.G93xx.MM.v$VERSION_NUMBER.$ZIP_DATE.zip
+ZIP_NAME=$KERNELNAME.G93xx.N.v$VERSION_NUMBER.$ZIP_DATE.zip
 ZIP_FILE_TARGET=$ZIP_FILE_DIR/$ZIP_NAME
 FUNC_BUILD_ZIP
 [ -d "$RDIR/.work_zip" ] && rm -rf $RDIR/.work_zip
