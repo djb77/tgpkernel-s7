@@ -689,10 +689,13 @@ static int arizona_runtime_resume(struct device *dev)
 	}
 
 	/* sync the gpio registers */
-	for (offset = 0; offset < num_gpios; offset++)
+	for (offset = 0; offset < num_gpios; offset++) {
+		if (!arizona->pdata.gpio_defaults[offset * 2])
+			continue;
 		regmap_write(arizona->regmap,
 			CLEARWATER_GPIO1_CTRL_1 + (offset * 2),
 			arizona->pdata.gpio_defaults[offset * 2]);
+	}
 
 	ret = regcache_sync(arizona->regmap);
 	if (ret != 0) {
@@ -809,10 +812,16 @@ static int arizona_suspend(struct device *dev)
 {
 	struct arizona *arizona = dev_get_drvdata(dev);
 
+#ifdef CONFIG_MFD_ARIZONA_DEFERRED_RESUME
+	cancel_work_sync(&arizona->deferred_resume_work);
+#endif
+
 	dev_dbg(arizona->dev, "Early suspend, disabling IRQ\n");
 
-	disable_irq(arizona->irq);
-	arizona->irq_sem = 1;
+	if (!arizona->irq_sem) {
+		disable_irq(arizona->irq);
+		arizona->irq_sem = 1;
+	}
 
 	return 0;
 }
@@ -822,9 +831,11 @@ static int arizona_resume_noirq(struct device *dev)
 	struct arizona *arizona = dev_get_drvdata(dev);
 
 	dev_dbg(arizona->dev, "Early resume, disabling IRQ\n");
-	disable_irq(arizona->irq);
 
-	arizona->irq_sem = 1;
+	if (!arizona->irq_sem) {
+		disable_irq(arizona->irq);
+		arizona->irq_sem = 1;
+	}
 
 	return 0;
 }
@@ -2134,14 +2145,6 @@ int arizona_dev_init(struct arizona *arizona)
 		goto err_reset;
 	}
 
-#ifdef CONFIG_PM_RUNTIME
-	arizona_runtime_suspend(arizona->dev);
-#endif
-
-	pm_runtime_set_autosuspend_delay(arizona->dev, 100);
-	pm_runtime_use_autosuspend(arizona->dev);
-	pm_runtime_enable(arizona->dev);
-
 	arizona_get_num_micbias(arizona, &max_micbias, &num_child_micbias);
 
 	for (i = 0; i < max_micbias; i++) {
@@ -2254,6 +2257,7 @@ int arizona_dev_init(struct arizona *arizona)
 			break;
 		case WM8998:
 		case WM1814:
+		case CS47L35:
 			val = arizona->pdata.dmic_ref[i]
 				<< ARIZONA_IN1_DMIC_SUP_SHIFT;
 			val |= (arizona->pdata.inmode[i] & 2)
@@ -2344,7 +2348,7 @@ int arizona_dev_init(struct arizona *arizona)
 	 * Give us a sane default for the headphone impedance in case the
 	 * extcon driver is not used
 	 */
-	arizona->hp_impedance = 32;
+	arizona->hp_impedance_x100 = 3200;
 
 	switch (arizona->type) {
 	case WM5102:
