@@ -24,6 +24,11 @@ git checkout tw70-pwmfix
 ./build.sh 7
 ./build.sh 0
 
+# Build TGPKernel Note7 Fan Edition
+git checkout tw70-n7fe
+./build.sh 7
+./build.sh 0
+
 # Build TGPKernel S8Port for N
 git checkout tw70-s8port
 ./build.sh 7
