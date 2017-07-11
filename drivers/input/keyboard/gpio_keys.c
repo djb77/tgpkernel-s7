@@ -542,8 +542,8 @@ static irqreturn_t gpio_keys_gpio_isr(int irq, void *dev_id)
 	struct gpio_button_data *bdata = dev_id;
 
 #ifdef CONFIG_SEC_DEBUG
-	int state = (gpio_get_value(bdata->button->gpio) ? 1 : 0) ^ bdata->button->active_low;
-	sec_debug_check_crash_key(bdata->button->code, state);
+	sec_debug_check_crash_key(bdata->button->code,
+		((gpio_get_value(bdata->button->gpio) ? 1 : 0) ^ bdata->button->active_low));
 #endif
 
 	BUG_ON(irq != bdata->irq);

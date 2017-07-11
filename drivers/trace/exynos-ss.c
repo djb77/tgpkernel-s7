@@ -2029,7 +2029,7 @@ static int __init exynos_ss_init(void)
 #if defined(CONFIG_EXYNOS_SNAPSHOT_HOOK_LOGGER) && defined(CONFIG_ANDROID_LOGGER)
 		register_hook_logger(exynos_ss_hook_logger);
 #endif
-#ifdef CONFIG_EXYNOS_SNAPSHOT_PSTORE
+#if defined(CONFIG_EXYNOS_SNAPSHOT_PSTORE) && defined(CONFIG_EXYNOS_SNAPSHOT_HOOK_LOGGER)
 		register_hook_pstore_log(exynos_ss_hook_logger);
 #endif 
 		register_reboot_notifier(&nb_reboot_block);
