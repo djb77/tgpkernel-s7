@@ -359,7 +359,6 @@ DECLARE_EXYNOS_ION_RESERVED_REGION("exynos8890-ion,", vscaler);
 DECLARE_EXYNOS_ION_RESERVED_REGION("exynos8890-ion,", gpu_crc);
 DECLARE_EXYNOS_ION_RESERVED_REGION("exynos8890-ion,", gpu_buffer);
 DECLARE_EXYNOS_ION_RESERVED_REGION("exynos8890-ion,", camera);
-DECLARE_EXYNOS_ION_RESERVED_REGION("exynos8890-ion,", secure_camera);
 
 int ion_exynos_contig_heap_info(int region_id, phys_addr_t *phys, size_t *size)
 {
