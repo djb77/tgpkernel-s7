@@ -792,29 +792,17 @@ static u64 z3fold_get_pool_size(struct z3fold_pool *pool)
 
 static int z3fold_zpool_evict(struct z3fold_pool *pool, unsigned long handle)
 {
-	if (pool->zpool && pool->zpool_ops && pool->zpool_ops->evict)
-		return pool->zpool_ops->evict(pool->zpool, handle);
-	else
-		return -ENOENT;
+	return zpool_evict(pool, handle);
 }
 
 static const struct z3fold_ops z3fold_zpool_ops = {
 	.evict =	z3fold_zpool_evict
 };
 
-static void *z3fold_zpool_create(const char *name, gfp_t gfp,
-			       const struct zpool_ops *zpool_ops,
-			       struct zpool *zpool)
+static void *z3fold_zpool_create(char *name, gfp_t gfp,
+			       struct zpool_ops *zpool_ops)
 {
-	struct z3fold_pool *pool;
-
-	pool = z3fold_create_pool(gfp, zpool_ops ? &z3fold_zpool_ops : NULL);
-	if (pool) {
-		pool->zpool = zpool;
-		pool->zpool_ops = zpool_ops;
-		pool->name = name;
-	}
-	return pool;
+	return z3fold_create_pool(gfp, zpool_ops ? &z3fold_zpool_ops : NULL);
 }
 
 static void z3fold_zpool_destroy(void *pool)
@@ -866,6 +854,17 @@ static u64 z3fold_zpool_total_size(void *pool)
 	return z3fold_get_pool_size(pool) * PAGE_SIZE;
 }
 
+static unsigned long z3fold_zpool_compact(void *pool)
+{
+	return 0;
+}
+
+static bool z3fold_zpool_compactable(void *pool, unsigned int pages)
+{
+	return false;
+}
+
+
 static struct zpool_driver z3fold_zpool_driver = {
 	.type =		"z3fold",
 	.owner =	THIS_MODULE,
@@ -877,6 +876,8 @@ static struct zpool_driver z3fold_zpool_driver = {
 	.map =		z3fold_zpool_map,
 	.unmap =	z3fold_zpool_unmap,
 	.total_size =	z3fold_zpool_total_size,
+	.compact =	z3fold_zpool_compact,
+	.compactable =	z3fold_zpool_compactable,
 };
 
 MODULE_ALIAS("zpool-z3fold");
