@@ -1860,7 +1860,7 @@ wl_cfgp2p_set_p2p_noa(struct bcm_cfg80211 *cfg, struct net_device *ndev, char* b
 	s32 ret = -1;
 	int count, start, duration;
 	wl_p2p_sched_t dongle_noa;
-	s32 bssidx, type;
+	s32 bssidx, type = WL_P2P_SCHED_TYPE_ABS;
 	int iovar_len = sizeof(dongle_noa);
 	CFGP2P_DBG((" Enter\n"));
 
@@ -1989,7 +1989,7 @@ wl_cfgp2p_set_p2p_ps(struct bcm_cfg80211 *cfg, struct net_device *ndev, char* bu
 	int ps, ctw;
 	int ret = -1;
 	s32 legacy_ps;
-	s32 conn_idx;
+	s32 conn_idx = 0;
 	s32 bssidx;
 	struct net_device *dev;
 
@@ -2037,7 +2037,7 @@ s32
 wl_cfgp2p_set_p2p_ecsa(struct bcm_cfg80211 *cfg, struct net_device *ndev, char* buf, int len)
 {
 	int ch, bw;
-	s32 conn_idx;
+	s32 conn_idx = 0;
 	s32 bssidx;
 	struct net_device *dev;
 	char smbuf[WLC_IOCTL_SMLEN];

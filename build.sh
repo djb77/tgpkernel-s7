@@ -8,7 +8,7 @@
 BUILD_SCRIPT=3.00
 export VERSION_NUMBER=$(<build/version)
 ARCH=arm64
-BUILD_CROSS_COMPILE=~/android/toolchains/aarch64-cortex_a53-linux-gnueabi/bin/aarch64-cortex_a53-linux-gnueabi-
+BUILD_CROSS_COMPILE=/home/twy/compile/aarch64-cortex_a53-linux-gnueabi/bin/aarch64-cortex_a53-linux-gnueabi-
 BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 RDIR=$(pwd)
 OUTDIR=$RDIR/.work/arch/$ARCH/boot
