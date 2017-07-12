@@ -34,7 +34,7 @@ config EXYNOS_SNAPSHOT_CALLSTACK
 config EXYNOS_SNAPSHOT_IRQ_EXIT
 	bool "Enable debugging of interrupt exit event by kevent"
 	depends on EXYNOS_SNAPSHOT && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_IRQ_EXIT_THRESHOLD
 	int "threshold of detection(microsecond)"
@@ -50,17 +50,17 @@ config EXYNOS_SNAPSHOT_IRQ_DISABLED
 config EXYNOS_SNAPSHOT_SPINLOCK
 	bool "Enable debugging of spinlock event by kevent(EXPERIMENTAL)"
 	depends on EXYNOS_SNAPSHOT && DEBUG_SPINLOCK && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_CLK
 	bool "Enable debugging of clock event by kevent(EXPERIMENTAL)"
 	depends on EXYNOS_SNAPSHOT && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_FREQ
 	bool "Enable debugging of frequence event by kevent(EXPERIMENTAL)"
 	depends on EXYNOS_SNAPSHOT && PM_DEVFREQ && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_HRTIMER
 	bool "Enable debugging of hrtimer by kevent"
@@ -75,22 +75,22 @@ config EXYNOS_SNAPSHOT_REG
 config EXYNOS_SNAPSHOT_REGULATOR
 	bool "Enable debugging of regulator and pmic driver"
 	depends on EXYNOS_SNAPSHOT && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_THERMAL
 	bool "Enable debugging of thermal driver"
 	depends on EXYNOS_SNAPSHOT && !EXYNOS_SNAPSHOT_MINIMIZED_MODE && EXYNOS_THERMAL
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_MBOX
 	bool "Enable debugging of mailbox for transferring with APM"
 	depends on EXYNOS_SNAPSHOT && EXYNOS_MBOX && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_HOOK_LOGGER
 	bool "Enable hooking android platform log for ramdump"
 	depends on EXYNOS_SNAPSHOT
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_PSTORE
 	bool "Enable supporting ramoops driver for pstore filesystem"
@@ -106,12 +106,12 @@ config EXYNOS_SNAPSHOT_PSTORE
 config EXYNOS_SNAPSHOT_PANIC_REBOOT
 	bool "Enable forced reboot after panic for ramdump"
 	depends on EXYNOS_SNAPSHOT
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_WATCHDOG_RESET
 	bool "Support watchdog reset when hardlockup detect"
 	depends on EXYNOS_SNAPSHOT && EXYNOS_SNAPSHOT_PANIC_REBOOT
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_CRASH_KEY
 	bool "Support Crash Key to artificial panic for debugging"
@@ -121,12 +121,12 @@ config EXYNOS_SNAPSHOT_CRASH_KEY
 config EXYNOS_SNAPSHOT_SFRDUMP
 	bool "Support dump of sfr region for debugging"
 	depends on EXYNOS_SNAPSHOT && !EXYNOS_SNAPSHOT_MINIMIZED_MODE
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_SFRDUMP_ADV
 	bool "SFRDUMP with checking power of IP"
 	depends on EXYNOS_SNAPSHOT_SFRDUMP
-	default y
+	default n
 
 config EXYNOS_SNAPSHOT_MINIMIZED_MODE
 	bool "Support minimized feature configuration"

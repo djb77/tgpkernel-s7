@@ -755,12 +755,13 @@ static int exynos_tmu_cpus_notifier(struct notifier_block *nb,
 		if (big_cpu_cnt == DUAL_CPU) {
 			/* changed to dual */
 			mutex_lock(&boost_lock);
-			dual_data->cpu_num = quad_data->cpu_num = big_cpu_cnt;
 
+#ifdef CONFIG_EXYNOS_SNAPSHOT_THERMAL
+			dual_data->cpu_num = quad_data->cpu_num = big_cpu_cnt; 
 			/* Snap shot logging */
 			exynos_ss_thermal(quad_pdata, 0, cool_device_name, 0);
 			exynos_ss_thermal(dual_pdata, 0, cool_device_name, 1);
-
+#endif
 			change_core_boost_thermal(quad_data->reg_conf, dual_data->reg_conf, DUAL_MODE);
 			mutex_unlock(&boost_lock);
 		}
@@ -786,22 +787,25 @@ static int exynos_tmu_cpus_notifier(struct notifier_block *nb,
 		if (big_cpu_cnt == QUAD_CPU){
 			/* changed to quad */
 			mutex_lock(&boost_lock);
+#ifdef CONFIG_EXYNOS_SNAPSHOT_THERMAL 
 			dual_data->cpu_num = quad_data->cpu_num = big_cpu_cnt;
 
 			/* Snap shot logging */
 			exynos_ss_thermal(quad_pdata, 0, cool_device_name, 1);
 			exynos_ss_thermal(dual_pdata, 0, cool_device_name, 0);
+#endif
 
 			change_core_boost_thermal(quad_data->reg_conf, dual_data->reg_conf, QUAD_MODE);
 			mutex_unlock(&boost_lock);
 		} else if (big_cpu_cnt == DUAL_CPU) {
 			mutex_lock(&boost_lock);
+#ifdef CONFIG_EXYNOS_SNAPSHOT_THERMAL
 			dual_data->cpu_num = quad_data->cpu_num = big_cpu_cnt;
 
 			/* Snap shot logging */
 			exynos_ss_thermal(quad_pdata, 0, cool_device_name, 0);
 			exynos_ss_thermal(dual_pdata, 0, cool_device_name, 1);
-
+#endif
 			change_core_boost_thermal(quad_data->reg_conf, dual_data->reg_conf, DUAL_MODE);
 			mutex_unlock(&boost_lock);
 		}
@@ -957,12 +961,15 @@ static const struct attribute_group exynos_thermal_sensor_attr_group = {
 static irqreturn_t exynos_tmu_irq(int irq, void *id)
 {
 	struct exynos_tmu_data *data = id;
+#ifdef CONFIG_EXYNOS_SNAPSHOT_THERMAL 
 	struct exynos_tmu_platform_data *pdata = data->pdata;
 	char *name = "interrupt";
+#endif
 
 	disable_irq_nosync(irq);
-
+#ifdef CONFIG_EXYNOS_SNAPSHOT_THERMAL 
 	exynos_ss_thermal(pdata, 0, name, 0);
+#endif
 	schedule_work(&data->irq_work);
 
 	return IRQ_HANDLED;
