@@ -19,8 +19,6 @@
 #include "cpufreq_governor.h"
 
 /* On-demand governor macros */
-<<<<<<< HEAD
-<<<<<<< HEAD
 #if defined(CONFIG_ZEN_INTERACTIVE) && defined(CONFIG_SCHED_MUQSS)
 	#define DEF_FREQUENCY_UP_THRESHOLD	(45)
 	#define MICRO_FREQUENCY_UP_THRESHOLD	(45)
@@ -37,14 +35,6 @@
 	#define MIN_FREQUENCY_UP_THRESHOLD	(11)
 	#define DEF_SAMPLING_DOWN_FACTOR	(1)
 #endif
-=======
-#define DEF_FREQUENCY_UP_THRESHOLD		(80)
-#define DEF_SAMPLING_DOWN_FACTOR		(1)
->>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
-=======
-#define DEF_FREQUENCY_UP_THRESHOLD		(80)
-#define DEF_SAMPLING_DOWN_FACTOR		(1)
->>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
 #define MAX_SAMPLING_DOWN_FACTOR		(100000)
 #define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(10000)
 #define MAX_FREQUENCY_UP_THRESHOLD		(100)
