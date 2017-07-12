@@ -29,6 +29,7 @@ config BUILDTIME_EXTABLE_SORT
 menu "General setup"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 config ZEN_INTERACTIVE
 	bool "Tune kernel for interactivity"
 	default y
@@ -62,6 +63,8 @@ config ZEN_INTERACTIVE
 	    Ondemand min upscaling limit...:   1 %  ->   6 %
 	    Ondemand downscaling factor....:   1    ->  10
 
+=======
+>>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
 =======
 >>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
 config BROKEN

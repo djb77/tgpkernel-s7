@@ -40,9 +40,13 @@ struct blk_flush_queue;
 
 #define BLKDEV_MIN_RQ	4
 <<<<<<< HEAD
+<<<<<<< HEAD
 #if defined (CONFIG_ZEN_INTERACTIVE)
 #define BLKDEV_MAX_RQ	512
 #elif definded (CONFIG_LARGE_DIRTY_BUFFER)
+=======
+#ifdef CONFIG_LARGE_DIRTY_BUFFER
+>>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
 =======
 #ifdef CONFIG_LARGE_DIRTY_BUFFER
 >>>>>>> parent of b0ebe72... ZEN: Implement Zen-tune v4.5
