@@ -1260,9 +1260,13 @@ static void __run_hrtimer(struct hrtimer *timer, ktime_t *now)
 	 */
 	raw_spin_unlock(&cpu_base->lock);
 	trace_hrtimer_expire_entry(timer, now);
+#ifdef EXYNOS_SNAPSHOT_HRTIMER
 	exynos_ss_hrtimer(timer, &now->tv64, fn, ESS_FLAG_IN);
+#endif
 	restart = fn(timer);
+#ifdef EXYNOS_SNAPSHOT_HRTIMER
 	exynos_ss_hrtimer(timer, &now->tv64, fn, ESS_FLAG_OUT);
+#endif
 	trace_hrtimer_expire_exit(timer);
 	raw_spin_lock(&cpu_base->lock);
 

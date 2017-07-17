@@ -1170,7 +1170,7 @@ static void exynos_ss_dump_one_task_info(struct task_struct *tsk, bool is_main)
 	int permitted;
 	struct mm_struct *mm;
 
-	permitted = ptrace_may_access(tsk, PTRACE_MODE_READ);
+	permitted = ptrace_may_access(tsk, PTRACE_MODE_READ | PTRACE_MODE_FSCREDS);
 	mm = get_task_mm(tsk);
 	if (mm) {
 		if (permitted)
