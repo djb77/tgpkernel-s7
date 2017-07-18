@@ -39,7 +39,7 @@ extern void exynos_ufs_ctrl_hci_core_clk(struct exynos_ufs *ufs, bool en);
 					((unsigned char *)(x) + 4 * (c))[2], ((unsigned char *)(x) + 4 * (c))[3])
 
 #define FMP_KEY_SIZE	32
-
+#if defined(CONFIG_UFS_FMP_DM_CRYPT) || defined(CONFIG_UFS_FMP_ECRYPT_FS) || defined (CONFIG_FIPS_FMP)
 static int fmp_xts_check_key(uint8_t *enckey, uint8_t *twkey, uint32_t len)
 {
 	if (!enckey | !twkey | !len) {
@@ -52,7 +52,7 @@ static int fmp_xts_check_key(uint8_t *enckey, uint8_t *twkey, uint32_t len)
 	else
 		return 0;       /* enckey and twkey are different */
 }
-
+#endif
 int fmp_map_sg(struct ufshcd_sg_entry *prd_table, struct scatterlist *sg,
 					uint32_t sector_key, uint32_t idx,
 					uint32_t sector, struct bio *bio)

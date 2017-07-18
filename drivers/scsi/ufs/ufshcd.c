@@ -1206,7 +1206,7 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 			if (sector_key == UFS_BYPASS_SECTOR_BEGIN) {
 				SET_DAS(&prd_table[i], CLEAR);
 				SET_FAS(&prd_table[i], CLEAR);
-
+#if defined(CONFIG_MMC_DW_FMP_DM_CRYPT) || defined(CONFIG_UFS_FMP_DM_CRYPT)
 				if (cmd->request->part) {
 					if (cmd->request->part->info) {
 						if(!strncmp(cmd->request->part->info->volname, "userdata", sizeof("userdata")) \
@@ -1218,6 +1218,7 @@ static int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
 									cmd->request->bio->bi_sensitive_data);
 					}
 				}
+#endif
 			} else {
 				unsigned long flags;
 				ret = fmp_map_sg(prd_table, sg, sector_key, i, sector, cmd->request->bio);

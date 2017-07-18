@@ -1970,9 +1970,7 @@ static int __exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
 
 static int __exynos_ufs_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
 {
-#if defined(CONFIG_UFS_FMP_DM_CRYPT) || defined(CONFIG_UFS_FMP_ECRYPT_FS)
 	int ret;
-#endif
 	struct exynos_ufs *ufs = to_exynos_ufs(hba);
 
 	exynos_ufs_ctrl_phy_pwr(ufs, true);
