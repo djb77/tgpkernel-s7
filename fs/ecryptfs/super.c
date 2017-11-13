@@ -34,6 +34,10 @@
 #include <linux/magic.h>
 #include "ecryptfs_kernel.h"
 
+#ifdef CONFIG_SDP
+#include "ecryptfs_dek.h"
+#endif
+
 struct kmem_cache *ecryptfs_inode_info_cache;
 
 /**
@@ -60,6 +64,10 @@ static struct inode *ecryptfs_alloc_inode(struct super_block *sb)
 	mutex_init(&inode_info->lower_file_mutex);
 	atomic_set(&inode_info->lower_file_count, 0);
 	inode_info->lower_file = NULL;
+#ifdef CONFIG_SDP
+	// get userid from super block
+	inode_info->crypt_stat.engine_id = -1;
+#endif
 	inode = &inode_info->vfs_inode;
 out:
 	return inode;
@@ -132,7 +140,38 @@ static int ecryptfs_statfs(struct dentry *dentry, struct kstatfs *buf)
  */
 static void ecryptfs_evict_inode(struct inode *inode)
 {
+#if defined(CONFIG_MMC_DW_FMP_ECRYPT_FS) || defined(CONFIG_UFS_FMP_ECRYPT_FS)
+	struct inode *lower_inode;
+	struct ecryptfs_mount_crypt_stat *mount_crypt_stat =
+		&ecryptfs_superblock_to_private(inode->i_sb)->mount_crypt_stat;
+#endif
 	truncate_inode_pages_final(&inode->i_data);
+#if defined(CONFIG_MMC_DW_FMP_ECRYPT_FS) || defined(CONFIG_UFS_FMP_ECRYPT_FS)
+	if (mount_crypt_stat->flags & ECRYPTFS_USE_FMP) {
+		lower_inode = ecryptfs_inode_to_lower(inode);
+		for(;;) {
+			if (!lower_inode)
+				break;
+
+			if (!strcmp("ext4", lower_inode->i_sb->s_type->name)) {
+				truncate_inode_pages(&lower_inode->i_data, 0);
+				lower_inode->i_mapping->iv = NULL;
+				lower_inode->i_mapping->key = NULL;
+				lower_inode->i_mapping->key_length = 0;
+				lower_inode->i_mapping->sensitive_data_index = 0;
+				lower_inode->i_mapping->alg = NULL;
+				lower_inode->i_mapping-> hash_tfm = NULL;
+#ifdef CONFIG_CRYPTO_FIPS
+				lower_inode->i_mapping->cc_enable = 0;
+#endif
+				break;
+			} else {
+				printk("%s: lower inode err: %s\n", __func__, lower_inode->i_sb->s_type->name);
+				break;
+			}
+		}
+	}
+#endif
 	clear_inode(inode);
 	iput(ecryptfs_inode_to_lower(inode));
 }
@@ -161,12 +200,44 @@ static int ecryptfs_show_options(struct seq_file *m, struct dentry *root)
 	}
 	mutex_unlock(&mount_crypt_stat->global_auth_tok_list_mutex);
 
-	seq_printf(m, ",ecryptfs_cipher=%s",
-		mount_crypt_stat->global_default_cipher_name);
+#ifdef CONFIG_SDP
+	seq_printf(m, ",userid=%d", mount_crypt_stat->userid);
+
+	if (mount_crypt_stat->flags & ECRYPTFS_MOUNT_SDP_ENABLED){
+		seq_printf(m, ",sdp_enabled");
+	}
+
+	if (mount_crypt_stat->partition_id >= 0){
+	    seq_printf(m, ",partition_id=%d", mount_crypt_stat->partition_id);
+	}
+#endif
+
+#ifdef CONFIG_DLP
+	if (mount_crypt_stat->flags & ECRYPTFS_MOUNT_DLP_ENABLED){
+		seq_printf(m, ",dlp_enabled");
+	}
+#endif
+	
+#if defined(CONFIG_MMC_DW_FMP_ECRYPT_FS) || defined(CONFIG_UFS_FMP_ECRYPT_FS)
+	if (mount_crypt_stat->cipher_code == RFC2440_CIPHER_AES_XTS_256)
+		seq_printf(m, ",ecryptfs_cipher=%s",
+			"aesxts");
+	else
+#endif
+		seq_printf(m, ",ecryptfs_cipher=%s",
+			mount_crypt_stat->global_default_cipher_name);
 
 	if (mount_crypt_stat->global_default_cipher_key_size)
 		seq_printf(m, ",ecryptfs_key_bytes=%zd",
 			   mount_crypt_stat->global_default_cipher_key_size);
+#ifdef CONFIG_WTL_ENCRYPTION_FILTER
+	if (mount_crypt_stat->flags & ECRYPTFS_ENABLE_FILTERING)
+		seq_printf(m, ",ecryptfs_enable_filtering");
+#endif
+#ifdef CONFIG_CRYPTO_FIPS
+	if (mount_crypt_stat->flags & ECRYPTFS_ENABLE_CC)
+		seq_printf(m, ",ecryptfs_enable_cc");
+#endif
 	if (mount_crypt_stat->flags & ECRYPTFS_PLAINTEXT_PASSTHROUGH_ENABLED)
 		seq_printf(m, ",ecryptfs_passthrough");
 	if (mount_crypt_stat->flags & ECRYPTFS_XATTR_METADATA_ENABLED)
@@ -177,6 +248,10 @@ static int ecryptfs_show_options(struct seq_file *m, struct dentry *root)
 		seq_printf(m, ",ecryptfs_unlink_sigs");
 	if (mount_crypt_stat->flags & ECRYPTFS_GLOBAL_MOUNT_AUTH_TOK_ONLY)
 		seq_printf(m, ",ecryptfs_mount_auth_tok_only");
+#if defined(CONFIG_MMC_DW_FMP_ECRYPT_FS) || defined(CONFIG_UFS_FMP_ECRYPT_FS)
+	if (mount_crypt_stat->flags & ECRYPTFS_USE_FMP)
+		seq_printf(m, ",ecryptfs_use_fmp");
+#endif
 
 	return 0;
 }
