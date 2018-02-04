@@ -171,6 +171,12 @@ config CPU_FREQ_DEFAULT_GOV_IRONACTIVE
 	  is based on the 'interactive' governor with many changes made by
 	  CAF.
 
+config CPU_FREQ_DEFAULT_GOV_LIONHEART
+	bool "lionheart"
+	select CPU_FREQ_GOV_LIONHEART
+	help
+	  Use the CPUFreq governor 'lionheart' as default.
+
 config CPU_FREQ_DEFAULT_GOV_ONDEMAND
 	bool "ondemand"
 	select CPU_FREQ_GOV_ONDEMAND
@@ -385,6 +391,13 @@ config CPU_FREQ_GOV_IRONACTIVE
 
 	  For details, take a look at linux/Documentation/cpu-freq.
 
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_LIONHEART
+	tristate "'lionheart' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  lionheart' - a "smart" optimized governor!
 	  If in doubt, say N.
 
 config CPU_FREQ_GOV_ONDEMAND
